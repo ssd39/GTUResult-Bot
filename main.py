@@ -40,7 +40,7 @@ def mainwork():
 
 
     while True:
-        time.sleep(3)
+        time.sleep(8)
         d=requests.get("https://www.gturesults.in/")
         soup = BeautifulSoup(d.text,'lxml')
         subject_options = [i.findAll('option') for i in soup.findAll('select', attrs={'name': 'ddlbatch'})]
@@ -50,7 +50,7 @@ def mainwork():
 
     option_value = str(subject_options[0])[a-38:a-7]
     enprefixo="180410107"
-    for iot in range(1,5):
+    for iot in range(1,131):
         for djfhui in range(0,5):
             enprefix=""+enprefixo
             s = requests.Session()
