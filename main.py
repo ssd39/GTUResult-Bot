@@ -31,7 +31,7 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 </style></head><body><table><tr><th>Enrollment No:</th><th>CPI</th></tr>'''
-templatelast="</table><h5>Prepared by OverclockedBrains</h5></body></html>"
+templatelast="</table><h5>Prepared by OverclockedBrains</h5><h5>This PDF is genrated by GTUResult-Bot...<br>This project is opensource, For source code visit:<br><a href='https://github.com/ssd39/GTUResult-Bot'>https://github.com/ssd39/GTUResult-Bot</a></h5></body></html>"
 
 def convertHtmlToPdf(sourceHtml, outputFilename):
     resultFile = open(outputFilename, "w+b")
@@ -49,7 +49,7 @@ while True:
 
 option_value = str(subject_options[0])[a-38:a-7]
 enprefixo="170410107"
-for iot in range(1,120):
+for iot in range(1,12):
     for djfhui in range(0,5):
         enprefix=""+enprefixo
         s = requests.Session()
