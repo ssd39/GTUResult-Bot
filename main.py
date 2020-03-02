@@ -10,10 +10,12 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import (Mail, Attachment, FileContent, FileName, FileType, Disposition)
 from flask import Flask
 import threading
-
+import time
 
 def cronwork():
-    pass
+    while True:
+        time.sleep(8)
+        a=requests.get("https://gturesult.herokuapp.com/")
 
 def mainwork():
     template='''<html><head><title>GTU RESULT</title><style>
@@ -47,7 +49,7 @@ def mainwork():
 
     option_value = str(subject_options[0])[a-38:a-7]
     enprefixo="170410107"
-    for iot in range(1,130):
+    for iot in range(1,5):
         for djfhui in range(0,5):
             enprefix=""+enprefixo
             s = requests.Session()
