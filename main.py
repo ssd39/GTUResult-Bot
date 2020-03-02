@@ -40,6 +40,7 @@ def mainwork():
 
 
     while True:
+        time.sleep(3)
         d=requests.get("https://www.gturesults.in/")
         soup = BeautifulSoup(d.text,'lxml')
         subject_options = [i.findAll('option') for i in soup.findAll('select', attrs={'name': 'ddlbatch'})]
