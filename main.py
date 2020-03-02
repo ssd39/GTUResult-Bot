@@ -57,7 +57,7 @@ def mainwork():
             d = s.get('https://www.gturesults.in/')
             soup = BeautifulSoup(d.text,'lxml')
             subject_options = [i.findAll('option') for i in soup.findAll('select', attrs={'name': 'ddlbatch'})]
-            a = str(subject_options[0]).find('BE SEM 5')
+            a = str(subject_options[0]).find('BE SEM 3')
             option_value = str(subject_options[0])[a - 38:a - 7]
             __VIEWSTATE=soup.select_one('#__VIEWSTATE').get('value')
             __VIEWSTATEGENERATOR=soup.select_one('#__VIEWSTATEGENERATOR').get('value')
