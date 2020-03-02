@@ -43,12 +43,12 @@ def mainwork():
         d=requests.get("https://www.gturesults.in/")
         soup = BeautifulSoup(d.text,'lxml')
         subject_options = [i.findAll('option') for i in soup.findAll('select', attrs={'name': 'ddlbatch'})]
-        a = str(subject_options[0]).find('BE SEM 5')
+        a = str(subject_options[0]).find('BE SEM 3')
         if (a != -1):
             break
 
     option_value = str(subject_options[0])[a-38:a-7]
-    enprefixo="170410107"
+    enprefixo="180410107"
     for iot in range(1,5):
         for djfhui in range(0,5):
             enprefix=""+enprefixo
