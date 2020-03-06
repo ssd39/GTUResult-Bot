@@ -19,8 +19,11 @@ rstatus=False
 
 def cronwork():
     while True:
-        time.sleep(8)
-        a=requests.get("https://gturesult.herokuapp.com/")
+        try:
+            time.sleep(8)
+            a=requests.get("https://gturesult.herokuapp.com/")
+        except:
+            pass
 
 def mainwork():
     template='''<html><head><title>GTU RESULT</title><style>
@@ -137,6 +140,9 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     global rstatus
+    global tried
+    global error1
+    global error2
     return "Result Status: {}<br>Tried: {}<br>Error1: {}<br>Error2: {}<br>".format(rstatus,tried,error1,error2)
 
 if __name__ == "__main__":
