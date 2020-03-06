@@ -12,6 +12,11 @@ from flask import Flask
 import threading
 import time
 
+tried=0
+error1=0
+error2=0
+rstatus=False
+
 def cronwork():
     while True:
         time.sleep(8)
@@ -38,52 +43,61 @@ def mainwork():
     templatelast="</table><h5>Prepared by OverclockedBrains</h5><h5>This PDF is genrated by GTUResult-Bot...<br>This project is opensource, For source code visit:<br><a href='https://github.com/ssd39/GTUResult-Bot'>https://github.com/ssd39/GTUResult-Bot</a></h5></body></html>"
 
 
-
+    global tried
+    global error1
+    global error2
     while True:
-        time.sleep(8)
-        d=requests.get("https://www.gturesults.in/")
-        soup = BeautifulSoup(d.text,'lxml')
-        subject_options = [i.findAll('option') for i in soup.findAll('select', attrs={'name': 'ddlbatch'})]
-        a = str(subject_options[0]).find('BE SEM 3')
-        if (a != -1):
-            break
+        try:
+            tried=tried+1
+            time.sleep(8)
+            d=requests.get("https://www.gturesults.in/")
+            soup = BeautifulSoup(d.text,'lxml')
+            subject_options = [i.findAll('option') for i in soup.findAll('select', attrs={'name': 'ddlbatch'})]
+            a = str(subject_options[0]).find('BE SEM 3 - Regular')
+            if (a != -1):
+                break
+        except:
+            error1=error1+1
+
 
     option_value = str(subject_options[0])[a-38:a-7]
     enprefixo="180410107"
+    global rstatus
+    rstatus=True
     for iot in range(1,131):
-        for djfhui in range(0,5):
-            enprefix=""+enprefixo
-            s = requests.Session()
-            d = s.get('https://www.gturesults.in/')
-            soup = BeautifulSoup(d.text,'lxml')
-            subject_options = [i.findAll('option') for i in soup.findAll('select', attrs={'name': 'ddlbatch'})]
-            a = str(subject_options[0]).find('BE SEM 3')
-            option_value = str(subject_options[0])[a - 38:a - 7]
-            __VIEWSTATE=soup.select_one('#__VIEWSTATE').get('value')
-            __VIEWSTATEGENERATOR=soup.select_one('#__VIEWSTATEGENERATOR').get('value')
-            if iot >99:
-                enprefix+=str(iot)
-            elif iot <10:
-                enprefix+=str(0)+str(0)+str(iot)
-            else:
-                enprefix+=str(0)+str(iot)
-            image_from_gtu = s.get("http://gturesults.in/Handler.ashx")
-            i = Image.open(BytesIO(image_from_gtu.content))
-            iar = np.asarray(i)
-            iar = np.delete(iar, 23, 0)
-            img = Image.fromarray(iar, 'RGB')
-            textotp = pytesseract.image_to_string(img)
-            payload={"__EVENTTARGET":"","__EVENTARGUMENT":"","__VIEWSTATE":__VIEWSTATE,"__VIEWSTATEGENERATOR":__VIEWSTATEGENERATOR,"ddlbatch":option_value,"txtenroll":enprefix,"txtSheetNo":"","CodeNumberTextBox":textotp,"btnSearch":"Search"}
-            l=s.post("https://www.gturesults.in/",data=payload)
-            soupx = BeautifulSoup(l.text, 'lxml')
-            resultol=soupx.select_one('#lblmsg').text
-            if resultol:
-                assd=resultol.split(" ")
-                if assd[0]=="Congratulation!!" or assd[0]=="Sorry!":
-                    cpi=soupx.select_one('#lblCPI').text
-                    template+="<tr><td>{}</td><td>{}</td></tr>".format(enprefix,cpi)
-                    print(enprefix,cpi)
-                    break
+        try:
+            for djfhui in range(0,5):
+                enprefix=""+enprefixo
+                s = requests.Session()
+                d = s.get('https://www.gturesults.in/')
+                soup = BeautifulSoup(d.text,'lxml')
+                __VIEWSTATE=soup.select_one('#__VIEWSTATE').get('value')
+                __VIEWSTATEGENERATOR=soup.select_one('#__VIEWSTATEGENERATOR').get('value')
+                if iot >99:
+                    enprefix+=str(iot)
+                elif iot <10:
+                    enprefix+=str(0)+str(0)+str(iot)
+                else:
+                    enprefix+=str(0)+str(iot)
+                image_from_gtu = s.get("http://gturesults.in/Handler.ashx")
+                i = Image.open(BytesIO(image_from_gtu.content))
+                iar = np.asarray(i)
+                iar = np.delete(iar, 23, 0)
+                img = Image.fromarray(iar, 'RGB')
+                textotp = pytesseract.image_to_string(img)
+                payload={"__EVENTTARGET":"","__EVENTARGUMENT":"","__VIEWSTATE":__VIEWSTATE,"__VIEWSTATEGENERATOR":__VIEWSTATEGENERATOR,"ddlbatch":option_value,"txtenroll":enprefix,"txtSheetNo":"","CodeNumberTextBox":textotp,"btnSearch":"Search"}
+                l=s.post("https://www.gturesults.in/",data=payload)
+                soupx = BeautifulSoup(l.text, 'lxml')
+                resultol=soupx.select_one('#lblmsg').text
+                if resultol:
+                    assd=resultol.split(" ")
+                    if assd[0]=="Congratulation!!" or assd[0]=="Sorry!":
+                        cpi=soupx.select_one('#lblCPI').text
+                        template+="<tr><td>{}</td><td>{}</td></tr>".format(enprefix,cpi)
+                        print(enprefix,cpi)
+                        break
+        except:
+            error2=error2+1
 
     template+=templatelast
     f=open("lol.html","w")
@@ -122,7 +136,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "Hello World from Flask"
+    global rstatus
+    return "Result Status: {}<br>Tried: {}<br>Error1: {}<br>Error2: {}<br>".format(rstatus,tried,error1,error2)
 
 if __name__ == "__main__":
     # Only for debugging while developing
