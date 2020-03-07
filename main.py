@@ -132,7 +132,7 @@ def mainwork():
     )
     message.attachment = attachedFile
 
-    sg = SendGridAPIClient("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")
+    sg = SendGridAPIClient("YOUR API KEY FOR SENDGRID")
     response = sg.send(message)
 
 app = Flask(__name__)
@@ -148,8 +148,8 @@ def hello():
 if __name__ == "__main__":
     # Only for debugging while developing
     t1 = threading.Thread(target=mainwork)
-    t2 = threading.Thread(target=cronwork)
+    #t2 = threading.Thread(target=cronwork)
     t1.start()
-    t2.start()
+    #t2.start()
     print("Flask API started")
     app.run(host='0.0.0.0', debug=True, port=os.environ['PORT'])
